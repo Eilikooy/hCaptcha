@@ -14,7 +14,7 @@ PM> Install-Package Texnomic.Blazor.hCaptcha
 ## Setup
 
 
-1. Reference hCaptcha & NuGet Package JavaScript Files In `Pages/_Host.cshtml` File:
+1. Reference hCaptcha & NuGet Package JavaScript Files In `Components/App.razor` File:
 
     ```html
     <head>
@@ -26,23 +26,21 @@ PM> Install-Package Texnomic.Blazor.hCaptcha
     </head>
     ```
 
-2. Add Package Configuration To Dependancy Injection Services in `Startup.cs` File:
+2. Add Package Configuration To Dependancy Injection Services in `Program.cs` File:
 
     ```csharp
     using Texnomic.Blazor.hCaptcha.Extensions;
 
-    public void ConfigureServices(IServiceCollection Services)
-    {
-        Services.AddHttpClient();
-        Services.AddHCaptcha(Options =>
+
+        builder.Services.AddHttpClient();
+        builder.Services.AddHCaptcha(Options =>
         {
             Options.SiteKey = "10000000-ffff-ffff-ffff-000000000001";
             Options.Secret = "0x0000000000000000000000000000000000000000";
         });
-    }
     ```
 
-3. Create Callback Function & Backing Field To Capture Captcha Result In `Example.razor.cs` File:
+3. Create Callback Function & Backing Field To Capture Captcha Result In `Example.razor` File:
 
     ```csharp
     private bool IsCaptchaValid { get; set; }

@@ -1,7 +1,6 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+variables:
+  buildContainerImage: 'mcr.microsoft.com/dotnet/sdk:8.0'
+  projectName: Texnomic.Blazor.hCaptcha
 
 trigger:
 - master
@@ -9,11 +8,15 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+  - stage: Build
+    displayName: Build Nuget package
+    jobs:
+      - job: Build
+        container:
+          image: $(buildContainerImage)
+        steps:
+        - task: CmdLine@2
+          displayName: 'Pack'
+          inputs:
+            script: 'dotnet pack $(projectName)/$(projectName).sln -c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'

@@ -6,7 +6,9 @@ trigger:
 - master
 
 pool:
-  vmImage: ubuntu-latest
+  name: 'Builders'
+  demands: 
+    - docker
 
 stages:
   - stage: Build

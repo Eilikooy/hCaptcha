@@ -22,4 +22,4 @@ stages:
         - task: CmdLine@2
           displayName: 'Pack'
           inputs:
-            script: 'dotnet pack $(projectName)/$(projectName).sln -c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+            script: 'dotnet pack $(projectName).sln -c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'

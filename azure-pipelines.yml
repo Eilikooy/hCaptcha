@@ -20,6 +20,10 @@ stages:
           image: $(buildContainerImage)
         steps:
         - task: CmdLine@2
+          displayName: 'Publish'
+          inputs:
+            script: 'dotnet publish $(projectName) -c Release'
+        - task: CmdLine@2
           displayName: 'Pack'
           inputs:
             script: 'dotnet pack $(projectName).sln -c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'

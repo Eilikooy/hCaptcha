@@ -26,15 +26,15 @@ stages:
         - task: NuGetCommand@2
           displayName: 'Nuget pack'
           inputs:
-                command: 'pack'
-                packagesToPack: '**/*.csproj'
-                versioningScheme: 'byPrereleaseNumber'
-                versionEnvVar: 'BUILD_SOURCEBRANCHNAME'
-                buildProperties: 'Configuration=Release'
+            command: pack
+            packagesToPack: '**/*.csproj'
+            versioningScheme: byPrereleaseNumber
+            versionEnvVar: 'BUILD_SOURCEBRANCHNAME'
+            buildProperties: 'Configuration=Release'
         - task: NuGetCommand@2
           displayName: 'NuGet push'
           inputs:
-          command: push
-          nuGetFeedType: external
-          publishFeedCredentials: 'Nuget EilikoOy'
+            command: push
+            nuGetFeedType: external
+            publishFeedCredentials: 'Nuget EilikoOy'
 

@@ -3,14 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <Version>0.1.1</Version>
-    <Authors>Texnomic</Authors>
-    <Company>Texnomic Ltd</Company>
-    <Description>ASP.NET Core hCaptcha Component for Server-Side Blazor.</Description>
-    <Copyright>Copyright 2020</Copyright>
+    <Version>0.2.0</Version>
+    <Authors>EilikoOy</Authors>
+    <Company>Eiliko Oy</Company>
+    <Description>ASP.NET Core hCaptcha Component for Server-Side Blazor. Initial work done by Texnomic Ltd</Description>
+    <Copyright>Copyright 2024</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Texnomic/hCaptcha</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Texnomic/hCaptcha</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Eilikooy/hCaptcha</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Eilikooy/hCaptcha</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>Captcha hCaptcha Blazor</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

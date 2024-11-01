@@ -1,4 +1,4 @@
-﻿namespace Texnomic.Blazor.hCaptcha.Configurations
+﻿namespace Eiliko.Blazor.hCaptcha.Configurations
 {
     public class HCaptchaConfiguration
     {

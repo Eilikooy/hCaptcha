@@ -1,4 +1,4 @@
-window.Texnomic =
+window.Blazor =
 {
     Blazor:
     {

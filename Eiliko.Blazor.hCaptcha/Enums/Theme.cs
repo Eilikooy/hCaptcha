@@ -1,4 +1,4 @@
-﻿namespace Texnomic.Blazor.hCaptcha.Enums
+﻿namespace Eiliko.Blazor.hCaptcha.Enums
 {
     public enum Theme : byte
     {

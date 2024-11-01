@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 
-using Texnomic.Blazor.hCaptcha.Configurations;
-using Texnomic.Blazor.hCaptcha.Enums;
+using Eiliko.Blazor.hCaptcha.Configurations;
+using Eiliko.Blazor.hCaptcha.Enums;
 
-namespace Texnomic.Blazor.hCaptcha
+namespace Eiliko.Blazor.hCaptcha
 {
     public partial class HCaptcha : IDisposable
     {
@@ -39,7 +39,7 @@ namespace Texnomic.Blazor.hCaptcha
             {
                 Instance = DotNetObjectReference.Create(this);
 
-                while (!await JsRuntime.InvokeAsync<bool>("Texnomic.Blazor.hCaptcha", Instance, ID,
+                while (!await JsRuntime.InvokeAsync<bool>("Eiliko.Blazor.hCaptcha", Instance, ID,
                     Configuration.CurrentValue.SiteKey, Theme.ToString().ToLower(), Size.ToString().ToLower()))
                     await Task.Delay(20);
             }

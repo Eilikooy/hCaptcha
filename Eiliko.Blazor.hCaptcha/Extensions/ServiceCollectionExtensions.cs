@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using Texnomic.Blazor.hCaptcha.Configurations;
+using Eiliko.Blazor.hCaptcha.Configurations;
 
-namespace Texnomic.Blazor.hCaptcha.Extensions
+namespace Eiliko.Blazor.hCaptcha.Extensions
 {
     public static class ServiceCollectionExtensions
     {

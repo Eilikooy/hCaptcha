@@ -1,4 +1,4 @@
-window.Blazor =
+window.Eiliko =
 {
     Blazor:
     {

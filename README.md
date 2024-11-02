@@ -1,13 +1,13 @@
 ## Eiliko.Blazor.hCaptcha
 
-![NuGet](https://img.shields.io/nuget/vpre/Texnomic.Blazor.hCaptcha?logo=NuGet&label=NuGet%20%7C%20Texnomic.Blazor.hCaptcha&logoColor=blue&color=blue)
+![NuGet](https://img.shields.io/nuget/vpre/Eiliko.Blazor.hCaptcha?logo=NuGet&label=NuGet%20%7C%20Eiliko.Blazor.hCaptcha&logoColor=blue&color=blue)
 
-ASP.NET Core hCaptcha Component for Server-Side Blazor.
+ASP.NET Core hCaptcha Component for Server-Side Blazor. Updated version of [Texnomic.Blazor.hCaptcha](https://github.com/Texnomic/hCaptcha)
 
 ## Installation
 
 ```pwsh
-PM> Install-Package Texnomic.Blazor.hCaptcha
+PM> Install-Package Eiliko.Blazor.hCaptcha
 ```
 
 ## Setup
@@ -20,7 +20,7 @@ PM> Install-Package Texnomic.Blazor.hCaptcha
 
     <script src="https://hcaptcha.com/1/api.js&render=explicit" async type="text/javascript"></script>
 
-    <script src="_content/Texnomic.Blazor.hCaptcha/scripts/hCaptcha.js" type="text/javascript"></script>
+    <script src="_content/Eiliko.Blazor.hCaptcha/scripts/hCaptcha.js" type="text/javascript"></script>
 
     </head>
     ```
@@ -28,7 +28,7 @@ PM> Install-Package Texnomic.Blazor.hCaptcha
 2. Add Package Configuration To Dependancy Injection Services in `Program.cs` File:
 
     ```csharp
-    using Texnomic.Blazor.hCaptcha.Extensions;
+    using Eiliko.Blazor.hCaptcha.Extensions;
 
 
         builder.Services.AddHttpClient();

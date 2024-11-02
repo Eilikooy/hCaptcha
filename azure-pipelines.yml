@@ -27,8 +27,10 @@ stages:
           displayName: 'Pack'
           inputs:
             script: 'dotnet pack $(projectName).sln -c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-        - task: CmdLine@2
+        - task: PublishBuildArtifacts@1
           displayName: 'Publish Artifact'
-          inputs:
-            script: 'dotnet nuget push $(Build.ArtifactStagingDirectory)/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $(NugetApiKey)'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'nuget_package'
+              publishLocation: 'Container'
 

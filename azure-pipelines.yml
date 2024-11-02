@@ -1,6 +1,6 @@
 variables:
   buildContainerImage: 'mcr.microsoft.com/dotnet/sdk:8.0'
-  projectName: Texnomic.Blazor.hCaptcha
+  projectName: Eiliko.Blazor.hCaptcha
   buildConfiguration: 'Release'
 
 trigger:

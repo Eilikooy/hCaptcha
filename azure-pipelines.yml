@@ -29,8 +29,8 @@ stages:
             script: 'dotnet pack $(projectName).sln -c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         - task: PublishBuildArtifacts@1
           displayName: 'Publish Artifact'
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-              ArtifactName: 'nuget_package'
-              publishLocation: 'Container'
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'nuget_package'
+            publishLocation: 'Container'
 

@@ -31,6 +31,5 @@ stages:
           displayName: 'Publish Artifact'
           inputs:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'nuget_package'
-            publishLocation: 'Container'
+            ArtifactName: drop
 

@@ -22,11 +22,11 @@ stages:
         - task: CmdLine@2
           displayName: 'Publish'
           inputs:
-            script: 'dotnet publish $(projectName) -c Release'
+            script: 'dotnet publish $(projectName)'
         - task: CmdLine@2
           displayName: 'Pack'
           inputs:
-            script: 'dotnet pack $(projectName).sln -c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+            script: 'dotnet pack $(projectName).sln --output $(Build.ArtifactStagingDirectory)'
         - task: PublishBuildArtifacts@1
           displayName: 'Publish Artifact'
           inputs:

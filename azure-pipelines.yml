@@ -23,18 +23,12 @@ stages:
           displayName: 'Publish'
           inputs:
             script: 'dotnet publish $(projectName) -c Release'
-        - task: NuGetCommand@2
-          displayName: 'Nuget pack'
+        - task: CmdLine@2
+          displayName: 'Pack'
           inputs:
-            command: pack
-            packagesToPack: '**/*.csproj'
-            versioningScheme: byPrereleaseNumber
-            versionEnvVar: 'BUILD_SOURCEBRANCHNAME'
-            buildProperties: 'Configuration=Release'
-        - task: NuGetCommand@2
-          displayName: 'NuGet push'
+            script: 'dotnet pack $(projectName).sln -c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        - task: CmdLine@2
+          displayName: 'Publish Artifact'
           inputs:
-            command: push
-            nuGetFeedType: external
-            publishFeedCredentials: 'Nuget EilikoOy'
+            script: 'dotnet nuget push $(Build.ArtifactStagingDirectory)/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $(NugetApiKey)'
 

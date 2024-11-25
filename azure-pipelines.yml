@@ -1,5 +1,5 @@
 variables:
-  buildContainerImage: 'mcr.microsoft.com/dotnet/sdk:8.0'
+  buildContainerImage: 'mcr.microsoft.com/dotnet/sdk:9.0'
   projectName: Eiliko.Blazor.hCaptcha
   buildConfiguration: 'Release'
 

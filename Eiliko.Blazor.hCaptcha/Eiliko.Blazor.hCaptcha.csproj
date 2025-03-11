@@ -15,7 +15,7 @@
     <PackageTags>Captcha hCaptcha Blazor</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIcon>Logo.png</PackageIcon>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReadmeFile>../README.md</PackageReadmeFile>
   </PropertyGroup>
 
 

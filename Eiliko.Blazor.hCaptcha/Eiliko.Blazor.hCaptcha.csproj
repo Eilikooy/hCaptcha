@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <Version>0.3.4</Version>
+    <Version>0.3.5</Version>
     <Authors>EilikoOy</Authors>
     <Company>Eiliko Oy</Company>
     <Description>ASP.NET Core hCaptcha Component for Server-Side Blazor. Initial work done by Texnomic Ltd</Description>

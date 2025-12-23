@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <Version>0.3.5</Version>
+    <Version>0.4.0</Version>
     <Authors>EilikoOy</Authors>
     <Company>Eiliko Oy</Company>
     <Description>ASP.NET Core hCaptcha Component for Server-Side Blazor. Initial work done by Texnomic Ltd</Description>
-    <Copyright>Copyright 2025</Copyright>
+    <Copyright>Copyright 2026</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Eilikooy/hCaptcha</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Eilikooy/hCaptcha</RepositoryUrl>
@@ -20,11 +20,11 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.7" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.1" />
   </ItemGroup>
 
 	

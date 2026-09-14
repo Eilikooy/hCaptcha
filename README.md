@@ -89,6 +89,16 @@ PM> Install-Package Eiliko.Blazor.hCaptcha
 | `Theme` | `Theme` | `Light` | `Light` or `Dark`. |
 | `Size` | `Size` | `Normal` | `Normal` is a wide bar, `Compact` is a small square block. |
 | `RemoteIp` | `string` | `null` | Client IP address forwarded to hCaptcha as `remoteip`, which improves its own scoring. Optional. |
+| any other attribute | | | Applied to the element the widget renders into, so `class` and `style` reach it directly. `id` is ignored because the component owns it. |
+
+Because attributes are passed through, the widget's footprint can be reserved on the component itself, which avoids the form shifting when the widget appears:
+
+```html
+<HCaptcha Size="Size.Compact" Theme="Theme.Dark" Callback="hCaptchaCallback"
+          style="width: 164px; min-height: 144px;" />
+```
+
+Compact renders at 164x144 and normal at 303x78.
 
 `ResetAsync()` clears a used token so the visitor can solve a new challenge. hCaptcha tokens are single-use, so call it after any failed submission.
 

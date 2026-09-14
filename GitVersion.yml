@@ -1,0 +1,40 @@
+# Automatic semantic versioning via GitVersion (https://gitversion.net).
+# The Azure DevOps pipeline runs "dotnet gitversion" and passes the result to "dotnet pack";
+# run "dotnet tool restore && dotnet gitversion" locally to see what the next version will be.
+#
+# Rules (verified against this repo's history):
+#   - Baseline is the latest git tag (e.g. "0.4.3"). Tags must be pushed for the pipeline to see them.
+#   - Every merge or commit on master bumps PATCH: 0.4.3 -> 0.4.4 -> 0.4.5 ...
+#   - To bump MINOR or MAJOR, put "+semver: minor" or "+semver: major" in the PR merge commit
+#     message (or a direct commit on master). Putting it in a branch commit also works, but the merge
+#     commit still adds a patch on top (e.g. 0.5.1 instead of 0.5.0).
+#   - Tagging a commit (e.g. "git tag 1.0.0 && git push origin 1.0.0") pins that exact version and
+#     becomes the new baseline.
+#
+# Release candidates: branch "release/<version>" off master. The branch name sets the
+# version and each commit on it produces the next rc, e.g. release/1.0.0 builds
+# 1.0.0-rc.0, then 1.0.0-rc.1 as fixes land. Merging it back to master drops the rc
+# label and yields the stable version. Tag that commit so it becomes the next baseline.
+workflow: TrunkBased/preview1
+branches:
+  # release/<version> produces <version>-rc.N so a build can be tested on NuGet before
+  # anything stable ships. increment: None because the version comes from the branch
+  # name, not from counting commits.
+  release:
+    mode: ContinuousDelivery
+    label: rc
+    increment: None
+    regex: "^releases?[/-](?<BranchName>.+)"
+    source-branches: [main]
+    is-release-branch: true
+    prevent-increment:
+      when-current-commit-tagged: false
+
+  # Merging any branch counts as one patch increment regardless of branch name; the default
+  # TrunkBased workflow would bump minor for every feature/* merge.
+  feature:
+    increment: Patch
+  pull-request:
+    increment: Patch
+  unknown:
+    increment: Patch

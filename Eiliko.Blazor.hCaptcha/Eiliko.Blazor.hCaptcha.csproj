@@ -2,8 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <Version>0.4.3</Version>
+    <!-- Version is computed by GitVersion in CI (see GitVersion.yml) and passed as -p:Version. Local builds get a placeholder. -->
+    <Version Condition="'$(Version)' == ''">0.0.0-local</Version>
     <Authors>EilikoOy</Authors>
     <Company>Eiliko Oy</Company>
     <Description>ASP.NET Core hCaptcha Component for Server-Side Blazor. Initial work done by Texnomic Ltd</Description>

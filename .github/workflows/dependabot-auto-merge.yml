@@ -1,0 +1,39 @@
+# Turns a green Dependabot pull request into a released package with no human step:
+# GitHub enables auto-merge -> the Azure DevOps check passes -> the PR merges ->
+# the master build runs GitVersion and packs the next patch version.
+#
+# DISABLED BY DEFAULT. It does nothing until the repository variable
+# DEPENDABOT_AUTOMERGE is set to "true" (Settings -> Secrets and variables ->
+# Actions -> Variables). Read the prerequisites in CLAUDE.md before enabling it:
+# without branch protection requiring the Azure Pipelines status check, "--auto"
+# merges immediately and unbuilt code reaches master.
+name: Dependabot auto-merge
+
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    if: >-
+      github.event.pull_request.user.login == 'dependabot[bot]'
+      && vars.DEPENDABOT_AUTOMERGE == 'true'
+    steps:
+    - name: Fetch Dependabot metadata
+      id: metadata
+      uses: dependabot/fetch-metadata@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Enable auto-merge
+      # Majors are already excluded in dependabot.yml; this is a second guard.
+      # Written as "not major" on purpose, so a grouped PR (where update-type can
+      # be empty) still qualifies instead of silently never merging.
+      if: steps.metadata.outputs.update-type != 'version-update:semver-major'
+      run: gh pr merge --auto --merge "$PR_URL"
+      env:
+        PR_URL: ${{ github.event.pull_request.html_url }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

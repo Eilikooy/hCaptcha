@@ -21,7 +21,7 @@ Build alone also produces a `.nupkg` (`GeneratePackageOnBuild=true`). `dotnet pa
 
 ## CI and versioning
 
-`azure-pipelines.yml` builds on `master` and on pull requests, inside the `dotnet/sdk:10.0` container on the self-hosted `Builders` pool: full-depth checkout (GitVersion needs history and tags), `dotnet gitversion /output buildserver`, build, pack, then publish the artifact **only on master**.
+`azure-pipelines.yml` builds on `master`, on `release/*`, and on pull requests, inside the `dotnet/sdk:10.0` container on the self-hosted `Builders` pool: full-depth checkout (GitVersion needs history and tags), `dotnet gitversion /output buildserver`, build, pack, then publish the artifact. Pull requests build but publish nothing; `master` and `release/*` publish.
 
 **Versioning is automatic (GitVersion, TrunkBased workflow, config in `GitVersion.yml`).** Do not edit `<Version>` in the csproj; it holds a `0.0.0-local` placeholder that applies only when CI does not pass one in.
 
@@ -31,6 +31,22 @@ Build alone also produces a `.nupkg` (`GeneratePackageOnBuild=true`). `dotnet pa
 - Versions always increase but can occasionally skip a number if squash merges and merge commits are mixed. Harmless for NuGet; pick one merge strategy to avoid it.
 
 Tags are the baseline and **must be pushed**, or CI computes from the wrong starting point.
+
+### Shipping a release candidate
+
+Master always produces stable version numbers, so an rc comes from a release branch. Branch `release/<version>` off master and push it; the pipeline builds release branches and publishes their artifact.
+
+| Step | Version produced |
+|---|---|
+| `release/1.0.0` created | `1.0.0-rc.0` |
+| each further commit on it | `1.0.0-rc.1`, `1.0.0-rc.2`, ... |
+| merged back to master | `1.0.0` stable |
+
+The version comes from the branch name, not from counting commits, so fixes during testing raise the rc number and leave the target version alone. Merging back drops the rc label on its own; tag that commit anyway so it becomes the next baseline.
+
+The first candidate is `rc.0` rather than `rc.1`. That is cosmetic and sorts correctly.
+
+Do not try to produce an rc by tagging master. A tag like `1.0.0-rc.1` there is silently emitted as plain `1.0.0`, because master strips prerelease labels.
 
 ## Dependency updates
 

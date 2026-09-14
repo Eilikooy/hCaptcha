@@ -5,6 +5,7 @@ variables:
 
 trigger:
 - master
+- release/*
 
 # Validation build for pull requests. GitHub-backed pipelines have PR triggers on by
 # default; declaring it makes the contract explicit, because Dependabot auto-merge is
@@ -58,10 +59,14 @@ stages:
               --output $(Build.ArtifactStagingDirectory)
               -p:Version=$(GitVersion.SemVer)
               -p:InformationalVersion=$(GitVersion.InformationalVersion)
-        # PR builds exist to prove the change compiles and packs; only master produces
-        # an artifact worth keeping.
+        # PR builds exist to prove the change compiles and packs. master and release
+        # branches produce artifacts worth keeping; release/* is how an rc package is
+        # produced for testing before a stable version ships.
         - task: PublishBuildArtifacts@1
           displayName: 'Publish Artifact'
-          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+          condition: >-
+            and(succeeded(), or(
+              eq(variables['Build.SourceBranch'], 'refs/heads/master'),
+              startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
           inputs:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'

@@ -2,6 +2,10 @@ variables:
   buildContainerImage: 'mcr.microsoft.com/dotnet/sdk:10.0'
   projectName: Eiliko.Blazor.hCaptcha
   buildConfiguration: 'Release'
+  # Set to 'true' once the NuGetApiKey secret exists to publish release candidates
+  # automatically. Left off so a release build cannot fail on a missing secret, and so
+  # publishing to a public feed is always a deliberate choice.
+  publishReleaseCandidates: 'false'
 
 trigger:
 - master
@@ -70,3 +74,31 @@ stages:
               startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
           inputs:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        # Publish release candidates automatically so they can be installed for testing
+        # without downloading the artifact and pushing it by hand.
+        #
+        # Only release/* reaches this step. master and pull requests never push, so a
+        # stable version is still released deliberately.
+        #
+        # Off by default. Enabling it takes two deliberate steps: add a secret pipeline
+        # variable named NuGetApiKey, then set publishReleaseCandidates to 'true'. The
+        # gate is a plain variable because secrets are not readable in conditions, so the
+        # step could not otherwise skip itself when the key is absent.
+        #
+        # --skip-duplicate keeps a re-run from failing on a version already published.
+        # NuGet.org versions cannot be deleted, only unlisted, so every commit on a
+        # release branch permanently consumes a public version number.
+        - task: CmdLine@2
+          displayName: 'Push package to NuGet'
+          condition: >-
+            and(succeeded(),
+              eq(variables['publishReleaseCandidates'], 'true'),
+              startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
+          env:
+            NUGET_API_KEY: $(NuGetApiKey)
+          inputs:
+            script: >-
+              dotnet nuget push "$(Build.ArtifactStagingDirectory)/*.nupkg"
+              --source https://api.nuget.org/v3/index.json
+              --api-key "$NUGET_API_KEY"
+              --skip-duplicate

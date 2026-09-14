@@ -46,6 +46,12 @@ The version comes from the branch name, not from counting commits, so fixes duri
 
 The first candidate is `rc.0` rather than `rc.1`. That is cosmetic and sorts correctly.
 
+Release candidates can publish themselves. `azure-pipelines.yml` has a `Push package to NuGet` step that runs only on `release/*`, never on `master` or pull requests, so a stable release stays a deliberate act. It is **off until two things are done**: add a secret pipeline variable `NuGetApiKey`, then set the `publishReleaseCandidates` variable to `'true'`. The gate is a plain variable rather than the secret itself because Azure DevOps does not expose secrets to step conditions, so the step could not otherwise skip itself when the key is missing.
+
+Pushing is irreversible. NuGet.org versions cannot be deleted, only unlisted, so with this enabled every commit on a release branch permanently consumes a public version number. `--skip-duplicate` keeps a re-run from failing on a version already published.
+
+Stable versions are still pushed by hand after merging the release branch and tagging.
+
 Do not try to produce an rc by tagging master. A tag like `1.0.0-rc.1` there is silently emitted as plain `1.0.0`, because master strips prerelease labels.
 
 ## Dependency updates

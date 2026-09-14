@@ -3,15 +3,38 @@ updates:
 - package-ecosystem: nuget
   directory: "/"
   schedule:
-    interval: daily
+    # Weekly, not daily. Times are UTC. Daily produced more PRs than anyone merged;
+    # nine of them went stale on 9.0.9 while the project moved on to 10.0.x by hand.
+    interval: weekly
+    day: monday
     time: "03:00"
-  open-pull-requests-limit: 10
+  open-pull-requests-limit: 5
+  labels:
+  - dependencies
+  commit-message:
+    prefix: deps
+
+  # Don't propose a version the day it ships; give it a few days to be pulled if broken.
+  cooldown:
+    default-days: 3
+    semver-major-days: 14
+
+  # One pull request for the whole batch instead of one per package. The five
+  # Microsoft packages here are always released together and have always been
+  # updated together by hand, so a single grouped PR matches how this repo works.
+  # Merging it bumps the patch version automatically (see GitVersion.yml).
+  groups:
+    nuget-dependencies:
+      patterns:
+      - "*"
+      update-types:
+      - minor
+      - patch
+
   ignore:
-  - dependency-name: Microsoft.AspNetCore.Components
-    versions:
-    - 5.0.2
-    - 5.0.4
-  - dependency-name: Microsoft.AspNetCore.Components.Web
-    versions:
-    - 5.0.2
-    - 5.0.4
+  # Major versions of these track the .NET major version, so a package-only bump
+  # would not restore against net10.0 without also changing TargetFramework.
+  # Those upgrades stay deliberate and manual, the way net_version_upgrade was done.
+  - dependency-name: "Microsoft.*"
+    update-types:
+    - version-update:semver-major

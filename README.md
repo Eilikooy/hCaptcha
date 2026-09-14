@@ -68,6 +68,57 @@ PM> Install-Package Eiliko.Blazor.hCaptcha
 
     Tokens are single-use. After a failed form submission call `await captcha.ResetAsync()` so the user can solve a new challenge.
 
+## Upgrading from 0.4.x
+
+1.0.0 fixes a vulnerability: the result of hCaptcha's verification call was never checked, so any token, including one never solved, was reported as valid. Upgrading is strongly recommended. Four changes affect existing setups.
+
+**`Size` now takes effect.** In 0.4.x the size option was handed to hCaptcha under a misspelled key and silently ignored, so every widget rendered at `Normal` no matter what the markup said. If your component sets `Size="Size.Compact"`, the widget will now genuinely render compact, which looks roughly square rather than a wide bar. Remove the parameter or set `Size="Size.Normal"` to keep the previous appearance.
+
+**Remove the second script tag.** The component loads its own JavaScript as a module. Delete the `_content/Eiliko.Blazor.hCaptcha/scripts/hCaptcha.js` tag from `App.razor`. Keep the hCaptcha `api.js` tag.
+
+**`AddHttpClient()` is no longer required** for this component. `AddHCaptcha` registers its own named client. Calling it anyway is harmless.
+
+**Some submissions that used to pass will now fail.** That is the point of the fix. Expired, replayed and forged tokens were previously accepted and are now rejected. Use `OnVerified` to log `ErrorCodes` if you want to see why.
+
+## Component parameters
+
+| Parameter | Type | Default | Purpose |
+|---|---|---|---|
+| `Callback` | `EventCallback<bool>` | none | Fires after every attempt. `true` only when the token was verified server-side. |
+| `OnVerified` | `EventCallback<HCaptchaVerificationResult>` | none | Same moment as `Callback`, with the full result instead of a bool. |
+| `Theme` | `Theme` | `Light` | `Light` or `Dark`. |
+| `Size` | `Size` | `Normal` | `Normal` is a wide bar, `Compact` is a small square block. |
+| `RemoteIp` | `string` | `null` | Client IP address forwarded to hCaptcha as `remoteip`, which improves its own scoring. Optional. |
+
+`ResetAsync()` clears a used token so the visitor can solve a new challenge. hCaptcha tokens are single-use, so call it after any failed submission.
+
+## Configuration options
+
+Set on `AddHCaptcha`. `SiteKey` and `Secret` are validated when the application starts, so a missing value fails fast instead of at first render.
+
+| Option | Type | Default | Purpose |
+|---|---|---|---|
+| `SiteKey` | `string` | required | Public site key, sent to the browser and included in every verification request. |
+| `Secret` | `string` | required | Account secret. Used server-side only and never sent to the browser. |
+| `ExpectedHostname` | `string` | `null` | When set, a token is rejected unless hCaptcha reports it was solved on this host. Case-insensitive. |
+| `VerifyUrl` | `Uri` | `https://api.hcaptcha.com/siteverify` | Verification endpoint. Override only for testing. |
+| `ScriptLoadTimeout` | `TimeSpan` | 10 seconds | How long to wait for hCaptcha's `api.js` before reporting failure. |
+
+## Verification result
+
+`OnVerified` receives an `HCaptchaVerificationResult` with `Success`, `Hostname`, `ChallengeTimestamp` and `ErrorCodes`. `Success` is true only when hCaptcha confirmed the token and the hostname matched, if you configured one.
+
+`ErrorCodes` carries hCaptcha's own codes plus these, raised by the component itself:
+
+| Code | Meaning |
+|---|---|
+| `hcaptcha-script-not-loaded` | `api.js` did not load within `ScriptLoadTimeout`, often an ad blocker or a content security policy. |
+| `token-expired` | The visitor solved the challenge but waited too long to submit. |
+| `hostname-mismatch` | The token was solved on a host other than `ExpectedHostname`. |
+| `siteverify-request-failed` | The call to hCaptcha could not be completed or returned unreadable content. |
+| `siteverify-http-<status>` | hCaptcha answered with a non-success HTTP status. |
+| `siteverify-empty-response` | hCaptcha answered with an empty body. |
+
 ## How verification works
 
 The token produced by the widget is never trusted on its own. On every solve the component POSTs the token, your secret and your site key to hCaptcha's `siteverify` endpoint from the server and only reports success when the response says `success: true` (and, if configured, the reported hostname matches `ExpectedHostname`). The secret never reaches the browser.

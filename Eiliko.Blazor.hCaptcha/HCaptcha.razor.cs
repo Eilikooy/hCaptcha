@@ -39,6 +39,14 @@ namespace Eiliko.Blazor.hCaptcha
         /// <summary>Optional client IP address forwarded to hCaptcha as <c>remoteip</c>.</summary>
         [Parameter] public string? RemoteIp { get; set; }
 
+        /// <summary>
+        /// Attributes applied to the element the widget renders into, so it can be styled or
+        /// sized directly, e.g. to reserve its footprint and avoid layout shift.
+        /// <c>id</c> is ignored: the component owns it and hCaptcha renders into it.
+        /// </summary>
+        [Parameter(CaptureUnmatchedValues = true)]
+        public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
         protected string ID { get; } = "hcaptcha-" + Guid.NewGuid().ToString("N");
 
         private readonly CancellationTokenSource _disposal = new();

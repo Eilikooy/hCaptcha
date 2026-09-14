@@ -1,1 +1,3 @@
-<div id="@ID"></div>
+@* @attributes is placed before id so the component's own id always wins: later
+   attributes override earlier ones, and hCaptcha renders into this id. *@
+<div @attributes="AdditionalAttributes" id="@ID"></div>
